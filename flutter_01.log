@@ -1,0 +1,59 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d emulator-5554 --dart-define=flutter.inspector.structuredErrors=true --web-allow-expose-url --devtools-server-address http://127.0.0.1:9101/ --target lib\main.dart
+
+## exception
+
+DartDevelopmentServiceException: DartDevelopmentServiceException: Failed to start Dart Development Service
+
+```
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel beta, 2.3.0-24.1.pre, on Microsoft Windows [Version 10.0.18363.1734], locale en-US)
+    • Flutter version 2.3.0-24.1.pre at D:\flutter\flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision 615957513e (10 weeks ago), 2021-06-25 09:24:44 -0700
+    • Engine revision 9d517f475b
+    • Dart version 2.14.0 (build 2.14.0-188.5.beta)
+
+[!] Android toolchain - develop for Android devices (Android SDK version 30.0.3)
+    ✗ cmdline-tools component is missing
+      Run `path/to/sdkmanager --install "cmdline-tools;latest"`
+      See https://developer.android.com/studio/command-line for more details.
+    ✗ Android license status unknown.
+      Run `flutter doctor --android-licenses` to accept the SDK licenses.
+      See https://flutter.dev/docs/get-started/install/windows#android-setup for more details.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[✓] Android Studio (version 4.1.0)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b01)
+
+[✓] IntelliJ IDEA Community Edition (version 2021.1)
+    • IntelliJ at C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.1
+    • Flutter plugin version 58.0.3
+    • Dart plugin version 211.7727
+
+[✓] VS Code (version 1.59.1)
+    • VS Code at C:\Users\NANO\AppData\Local\Programs\Microsoft VS Code
+    • Flutter extension version 3.25.0
+
+[✓] Connected device (3 available)
+    • AOSP on IA Emulator (mobile) • emulator-5554 • android-x86    • Android 9 (API 28) (emulator)
+    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 92.0.4515.159
+    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 92.0.902.78
+
+! Doctor found issues in 1 category.
+```
