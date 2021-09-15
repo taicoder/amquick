@@ -1,3 +1,4 @@
+import 'package:amquick/controller/usercontroller.dart';
 import 'package:flutter/services.dart';
 import '../all_export.dart';
 
@@ -115,8 +116,9 @@ class Login extends StatelessWidget {
                       height: 48,
                       child: ElevatedButton(
                         onPressed: () async {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, "/index");
+                          // Navigator.pop(context);
+                          // Navigator.pushNamed(context, "/index");
+                          userController.login();
                         },
                         child: const Text("ĐĂNG NHẬP"),
                         style: ElevatedButton.styleFrom(
