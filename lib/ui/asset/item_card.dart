@@ -1,15 +1,15 @@
+import 'dart:math';
 import 'package:amquick/all_export.dart';
-import 'package:amquick/models/product.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:math';
 import '../../../constants.dart';
 
 class ItemCard extends StatelessWidget {
-  final Product product;
+  final TaiSanModel taiSanModel;
   // final Function press;
   const ItemCard({
     Key? key,
-    required this.product,
+    required this.taiSanModel,
     // required this.press,
   }) : super(key: key);
 
@@ -20,15 +20,16 @@ class ItemCard extends StatelessWidget {
       elevation: 2,
       color: Colors.white,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(24))),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Padding(
         padding: const EdgeInsets.all(0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(30),
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(10),
+                topLeft: Radius.circular(10),
               ),
               child: Image.asset(
                 "assets/images/3.jpg",
@@ -42,29 +43,65 @@ class ItemCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Học sinh hơn n 50 tỉn 50 tỉn 50 tỉ 50 tỉ",
+                    taiSanModel.ten,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: ThemeConfig.headerSize,
                     ),
                   ),
-                  FittedBox(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "Giá: 200.000 VNĐ",
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
+                          "("+taiSanModel.loaits!.ten+")",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: ThemeConfig.smallSize,
+                            fontSize: ThemeConfig.titleSize,
                           ),
                         ),
-                        Text(
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
+                          "Giá: "+convertVND(taiSanModel.gia)+" VNĐ",
+                        style: TextStyle(
+                          fontSize: ThemeConfig.titleSize,
+                        ),
+                      ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
                           "Ngày SD: 10/01/2022",
                           style: TextStyle(
-                            fontSize: ThemeConfig.smallSize,
+                            fontSize: ThemeConfig.titleSize,
                           ),
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:10),
+                      child: Text("Mô tả:",
+                      style: TextStyle(fontSize: ThemeConfig.headerSize,),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:10),
+                      child: Text("[Chưa có thông tin]",
+                        style: TextStyle(fontSize: ThemeConfig.titleSize),
+                        maxLines: 8,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],

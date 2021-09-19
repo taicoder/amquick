@@ -45,6 +45,7 @@ class _IndexState extends State<Index> {
           child: FloatingActionButton(
             backgroundColor: ThemeConfig.blueColor,
             onPressed: () {
+              scanQRController.scanQR();
               setState(() {
                 // count++;
               });
@@ -103,6 +104,7 @@ class _IndexState extends State<Index> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
+                      assetController.getAll();
                       setState(() {
                         currentTab = 1;
                         _pageController.animateToPage(1,

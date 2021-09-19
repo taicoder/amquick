@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:amquick/all_export.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,14 +64,14 @@ class Home extends StatelessWidget {
                       left: 10, top: 3, bottom: 0, right: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Tài sản",
+                    child: Obx(() => Text(
+                      scanQRController.qrCode,
                       style: TextStyle(
                         color: ThemeConfig.blueColor,
                         fontWeight: FontWeight.bold,
                         fontSize: ThemeConfig.titleSize,
                       ),
-                    ),
+                    )),
                   ),
                 ),
                 Padding(

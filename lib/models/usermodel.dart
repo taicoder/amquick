@@ -15,7 +15,8 @@ class UserModel {
       name: json["name"],
       quyen: json["quyen"] ?? null,
       phongban: json["phongban"]!=null ? PhongBanModel.fromJson(json["phongban"]) : null ,
-      avatar: json["avatar"]);
+      avatar: json["avatar"]
+  );
 
   Map<String, dynamic> toJson() => {
         "user": user,

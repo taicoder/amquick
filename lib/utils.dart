@@ -131,6 +131,16 @@ String convertDateToString(DateTime? date) {
     return "";
   }
 }
+
+String convertVND(double x){
+  try {
+    final formatter =  NumberFormat.decimalPattern("vi_VN").format(x);
+    return formatter;
+  }catch(e){
+    return e.toString();
+  }
+}
+
 double get marginHorizon => getSize(8);
 double get marginVertical => getSize(12);
 Widget get space => SizedBox(height: getSize(4), width: getSize(4),);

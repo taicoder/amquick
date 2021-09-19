@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:amquick/all_export.dart';
-import 'package:dio/dio.dart';
 
 mixin UserApi on BaseApi {
   Future<bool> login({String? user, String? password}) async {
@@ -12,14 +9,16 @@ mixin UserApi on BaseApi {
     };
     try {
       var response = await dio.post(url, data: data);
-     //  print(response.data["results"]);
-     // UserModel a= UserModel.fromJson(response.data["results"]);
-     //  if(a.phongban==null) print("1");
-     //  else print("0");
-    }catch(e){
-      globalController.error=e.toString();
+      if (response.data["success"] == "OK") {
+        globalController.userSharedPreferences(UserModel.fromJson(response.data["results"]),response.data["token"].toString());
+        return true;
+      } else {
+        globalController.error = response.data["results"];
+        return false;
+      }
+    } catch (e) {
+      globalController.error = e.toString();
       return false;
     }
-    return true;
   }
 }

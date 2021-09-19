@@ -1,10 +1,9 @@
 import "package:amquick/all_export.dart";
 import 'package:amquick/MyClippers/clipPath.dart';
-import 'package:amquick/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:amquick/constants.dart';
 
-import 'categorries.dart';
+import 'categories.dart';
 import 'item_card.dart';
 
 class Asset extends StatelessWidget {
@@ -14,26 +13,20 @@ class Asset extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ClipPathAndSearch(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-          child: Text(
-            "Loại tài sản",
-          ),
-        ),
         Categories(),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
             child: GridView.builder(
-              itemCount: 3,
+              itemCount: assetController.listAssets.length ,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 15,
                 childAspectRatio: 0.75,
               ),
               itemBuilder: (context, index) => ItemCard(
-                product: products[index],
+                taiSanModel: assetController.listAssets[index],
               ),
             ),
           ),

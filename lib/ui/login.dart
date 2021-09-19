@@ -4,7 +4,6 @@ import '../all_export.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,72 +64,7 @@ class Login extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: "Số điện thoại",
-                        prefixIcon: const Icon(Icons.phone_android),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        isDense: true, // important line
-                        contentPadding: const EdgeInsets.fromLTRB(
-                            20, 10, 20, 10), // control your hints text size
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Mật khẩu",
-                        prefixIcon: const Icon(Icons.vpn_key),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        isDense: true, // important line
-                        contentPadding: const EdgeInsets.fromLTRB(
-                            20, 10, 20, 10), // control your hints text size
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          // Navigator.pop(context);
-                          // Navigator.pushNamed(context, "/index");
-                          userController.login();
-                        },
-                        child: const Text("ĐĂNG NHẬP"),
-                        style: ElevatedButton.styleFrom(
-                          primary: ThemeConfig.blueColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                child: LoginForm(context),
               ),
             ],
           ),
@@ -138,4 +72,77 @@ class Login extends StatelessWidget {
       ),
     );
   }
+
+
+  Widget LoginForm(BuildContext context){
+    return Column(
+      children: [
+        TextFormField(
+          keyboardType: TextInputType.number,
+          controller: userController.phoneController,
+          decoration: InputDecoration(
+            hintText: "Số điện thoại",
+            prefixIcon: const Icon(Icons.phone_android),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            isDense: true, // important line
+            contentPadding: const EdgeInsets.fromLTRB(
+                20, 10, 20, 10), // control your hints text size
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        TextFormField(
+          obscureText: true,
+          controller: userController.passwordController,
+          decoration: InputDecoration(
+            hintText: "Mật khẩu",
+            prefixIcon: const Icon(Icons.vpn_key),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            isDense: true, // important line
+            contentPadding: const EdgeInsets.fromLTRB(
+                20, 10, 20, 10), // control your hints text size
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 25,
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () async {
+               userController.login(context);
+            },
+            child: Obx(()=>userController.processing==true? CircularProgressIndicator() : Text("ĐĂNG NHẬP")),
+            style: ElevatedButton.styleFrom(
+              primary: ThemeConfig.blueColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
 }
+

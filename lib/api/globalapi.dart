@@ -2,7 +2,8 @@ import 'package:amquick/all_export.dart';
 import 'package:dio/dio.dart';
 
 class BaseApi {
-  Dio dio = new Dio(BaseOptions(
+  Dio dio = Dio(
+  BaseOptions(
     baseUrl: AppConfig.SERVER_URL,
     connectTimeout: 5*1000,  //10s
     receiveTimeout: 60*1000,  //60s
@@ -30,6 +31,6 @@ class BaseApi {
   // }
 }
 
-class Api extends BaseApi with UserApi {}
+class Api extends BaseApi with UserApi, AssetApi {}
 
 final Api api = Api();
