@@ -2,7 +2,7 @@ import 'package:amquick/all_export.dart';
 
 class SuaDoiModel {
   String? nguoisua;
-  DateTime? tgsua;
+  String? tgsua;
 
   SuaDoiModel({
     this.nguoisua ,
@@ -11,7 +11,7 @@ class SuaDoiModel {
 
   factory SuaDoiModel.fromJson(Map<String, dynamic> json) => SuaDoiModel(
       nguoisua: json["nguoisua"],
-      tgsua: json["tgsua"]
+      tgsua: convertStringDateTimeFromTimestamp(json["tgsua"])
   );
 
   Map<String, dynamic> toJson() => {

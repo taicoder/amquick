@@ -11,18 +11,19 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin),
-      child: SizedBox(
+      child: Obx(()=> assetController.processing==true ? Text(""): SizedBox(
         height: 25,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: assetController.listCategories.length,
           itemBuilder: (context, index) => buildCategory(index),
         ),
+      ),
       ),
     );
   }
@@ -31,8 +32,8 @@ class _CategoriesState extends State<Categories> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedIndex = index;
-        //  Get.snackbar("f",  assetController.listLoaiTS[index].ten);
+          assetController.selectedIndex = index;
+          assetController.getAssetFromCategorie(assetController.listCategories[index].id.toString());
         });
       },
       child: Padding(
@@ -44,14 +45,15 @@ class _CategoriesState extends State<Categories> {
               assetController.listCategories[index].ten,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: selectedIndex == index ? kTextColor : kTextLightColor,
+                color: assetController.selectedIndex == index ? kTextColor : kTextLightColor,
+                fontSize: ThemeConfig.titleSize,
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: kDefaultPaddin / 4), //top padding 5
               height: 2,
               width: 30,
-              color: selectedIndex == index ? Colors.black : Colors.transparent,
+              color: assetController.selectedIndex == index ? Colors.black : Colors.transparent,
             ),
           ],
         ),

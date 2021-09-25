@@ -1,0 +1,1 @@
+db.nguoidung.update( {}, { $rename: { 'name': 'hoten', 'avatar': 'anhdaidien' } } , true, true)

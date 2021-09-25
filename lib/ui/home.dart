@@ -5,7 +5,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -38,13 +38,53 @@ class Home extends StatelessWidget {
                         ElevatedButton(
                           child: Padding(
                             padding: const EdgeInsets.all(15),
-                            child: Text(
-                              '2022',
+                            child: Obx(()=>Text(
+                              globalController.year.toString(),
                               style:
-                                  TextStyle(fontSize: ThemeConfig.defaultSize),
-                            ),
+                              TextStyle(fontSize: ThemeConfig.defaultSize),
+                            )) ,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Chọn năm'),
+                                content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(onPressed: (){
+                                      globalController.setYearSharedPrefsSub();
+                                    }, icon: Icon(Icons.remove)),
+                                    Obx(()=>ElevatedButton(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15),
+                                        child: Text(
+                                          globalController.year.toString(),
+                                          style:
+                                          TextStyle(fontSize: ThemeConfig.defaultSize),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ThemeConfig.blueColor,
+                                        shape: const CircleBorder(),
+                                      ),
+                                    )),
+                                    IconButton(onPressed: (){
+                                      globalController.setYearSharedPrefsAdd();
+                                    }, icon: Icon(Icons.add)),
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, 'Đóng'),
+                                    child: const Text('Đóng'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             primary: ThemeConfig.blueColor,
                             shape: const CircleBorder(),
@@ -64,14 +104,14 @@ class Home extends StatelessWidget {
                       left: 10, top: 3, bottom: 0, right: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Obx(() => Text(
-                      scanQRController.qrCode,
+                    child: Text(
+                      "Số lượng tài sản",
                       style: TextStyle(
                         color: ThemeConfig.blueColor,
                         fontWeight: FontWeight.bold,
                         fontSize: ThemeConfig.titleSize,
                       ),
-                    )),
+                    ),
                   ),
                 ),
                 Padding(

@@ -12,14 +12,20 @@ class LuanChuyenModel {
   });
 
   factory LuanChuyenModel.fromJson(Map<String, dynamic> json) => LuanChuyenModel(
-      ngaychuyen: json["ngaychuyen"],
-      nguoinhan: json["nguoinhan"],
-      phongban: json["phongban"]!=null ? PhongBanModel.fromJson(json["phongban"]) : null
+      ngaychuyen:  DateTime.parse(json["ngaychuyen"]),
+      nguoinhan: json["nguoinhan"] ?? "",
+      phongban: json["phongban"]!=null ? PhongBanModel.fromJsonEmbed(json["phongban"]) : null
   );
 
-  Map<String, dynamic> toJson() => {
-        "ngaychuyen": ngaychuyen,
+  Map<String, dynamic> toJsonDisplay() => {
+        "ngaychuyen": convertStringDateFromDateTime(ngaychuyen),
         "nguoinhan": nguoinhan,
-        "phongban": phongban
+        "phongban": phongban==null ? "null" : phongban!.toJson()
       };
+
+  Map<String, dynamic> toJson() => {
+    "ngaychuyen": convertStringDateFromDateTime(ngaychuyen),
+    "nguoinhan": nguoinhan,
+    "phongban": phongban==null? null : phongban!.toJson()
+  };
 }

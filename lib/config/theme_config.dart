@@ -2,16 +2,16 @@ import '../all_export.dart';
 import '../utils.dart';
 
 class ThemeConfig {
-  static Color backgroundColor = const Color(0xFFF5FAFE);
-  static Color textColor = const Color(0xFF243d44);
-  static Color lightGrey = const Color(0xfff3f3f4);
+  static const Color backgroundColor = Color(0xFFF5FAFE);
+  static const Color textColor = Color(0xFF243d44);
+  static const Color lightGrey = Color(0xfff3f3f4);
 
   static Color primaryColor = Colors.redAccent;
-  static Color secondColor = const Color(0xff6adca5);
+  static const Color secondColor =  Color(0xff6adca5);
 
-  static Color redColor = const Color(0xFFde0e16);
-  static Color whiteColor = Colors.white;
-  static Color blackColor = Colors.black;
+  static const Color redColor =  Color(0xFFde0e16);
+  static const Color whiteColor = Colors.white;
+  static const Color blackColor = Colors.black;
 
   static double borderRadius = 10;
 
@@ -22,7 +22,7 @@ class ThemeConfig {
   static double get defaultSize => getSize(16);
   static double get smallSize => getSize(14);
 
-  static Color blueColor = const Color(0xFF3383CD);
+  static const Color blueColor =  Color(0xFF3383CD);
 
   static const kLightPinkColor = Color(0xffF3BBEC);
   static const kYellowColor = Color(0xffF3AA26);

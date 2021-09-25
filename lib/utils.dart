@@ -124,9 +124,9 @@ DateTime? convertToDate(String date) {
   }
 }
 
-String convertDateToString(DateTime? date) {
+String convertStringDateFromDateTime(DateTime? date) {
   try {
-    return DateFormat("dd-MM-yyyy").format(date!);
+    return DateFormat("dd/MM/yyyy").format(date!);
   } catch (e) {
     return "";
   }
@@ -140,6 +140,117 @@ String convertVND(double x){
     return e.toString();
   }
 }
+
+num convertToNum(String x){
+  try {
+    final formatter =  NumberFormat.decimalPattern("vi_VN").parse(x);
+    return formatter;
+  }catch(e){
+    return 0;
+  }
+}
+
+String convertStringDateFromTimestamp(int timestamp) {
+  try {
+    var dt = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return  DateFormat('dd/MM/yyyy').format(dt);
+  }catch(e){
+    return e.toString();
+  }
+}
+
+String convertStringDateTimeFromTimestamp(int timestamp) {
+  try {
+    var dt = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return  DateFormat('dd/MM/yyyy, HH:mm:ss').format(dt);
+  }catch(e){
+    return e.toString();
+  }
+}
+
+void myModalBottomSheetPhongBan(BuildContext context, TextEditingController textEditingController){
+  showModalBottomSheet(
+      isScrollControlled:true,
+      backgroundColor: ThemeConfig.whiteColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+      ),
+      context: context,
+      builder: (context){
+        return FractionallySizedBox(
+          heightFactor: 0.95,
+          child: Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Chọn Phòng ban", style: TextStyle(fontSize: ThemeConfig.titleSize),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 35,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 250,
+                          child:  TextFormField(
+                            onChanged:  (value){
+                              assetController.searchPhongBan();
+                            },
+                            // keyboardType: TextInputType.number,
+                            controller: assetController.searchPhongBanController,
+                            decoration: InputDecoration(
+                              hintText: "Tìm kiếm",
+                              prefixIcon: const Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              isDense: true, // important line
+                              contentPadding: const EdgeInsets.fromLTRB(
+                                  20, 10, 20, 10), // control your hints text size
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) ,
+                        IconButton(onPressed: (){
+                          Navigator.pop(context);
+                        }, icon: Icon(Icons.close)),
+
+
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Obx(()=>!assetController.processing? ListView(
+                    children: ListTile.divideTiles( //          <-- ListTile.divideTiles
+                      context: context,
+                      tiles: assetController.listSearchPhongBan.map((pb) => ListTile(
+                        onTap: (){
+                          textEditingController.text=pb.tenpb;
+                          Navigator.pop(context);
+                        },
+                        title: Text(pb.tenpb, style: TextStyle(fontSize: ThemeConfig.titleSize)),
+                      )),
+                    ).toList(),
+                  ) : CircularProgressIndicator()) ,
+                ),
+
+              ],
+            ) ,
+          ),
+        );
+
+      });
+}
+
 
 double get marginHorizon => getSize(8);
 double get marginVertical => getSize(12);

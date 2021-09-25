@@ -1,4 +1,5 @@
 import 'package:amquick/all_export.dart';
+import 'package:amquick/controller/usercontroller.dart';
 import 'package:flutter/cupertino.dart';
 
 class Account extends StatelessWidget {
@@ -57,32 +58,36 @@ class Account extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
-              "Nguyễn Văn Tài",
+            Obx(()=>userController.processing==false ? Text(
+              globalController.hoten!= userController.userModel.hoten && userController.userModel.hoten!="" ? userController.userModel.hoten : globalController.hoten,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: ThemeConfig.headerSize,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "0382584635",
-                style: TextStyle(
-                  fontSize: ThemeConfig.headerSize,
-                  letterSpacing: 2,
-                ),
+            ): Text("")),
+
+            SizedBox(height: 15,),
+
+
+            Obx(()=>userController.processing==false ? Text(
+              globalController.tenphongban!= userController.departmentController.text && userController.departmentController.text!="" ? userController.departmentController.text : globalController.tenphongban,
+              style: TextStyle(
+                fontSize: ThemeConfig.titleSize,
               ),
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            buildNotificationOptionRow("Bật thông báo", true),
-            Divider(
+            ): Text("")),
+
+           const SizedBox(height: 25,),
+            // Divider(
+            //   thickness: 1,
+            // ),
+           // buildNotificationOptionRow("Bật thông báo", true),
+            const Divider(
               thickness: 1,
             ),
             ListTile(
-              onTap: () {},
+              onTap: () async {
+                await userController.toInfor();
+              },
               leading: Icon(Icons.info),
               title: Text(
                 "Đổi thông tin",
@@ -90,22 +95,24 @@ class Account extends StatelessWidget {
                   fontSize: ThemeConfig.titleSize,
                 ),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey,
                 size: 18,
               ),
             ),
             ListTile(
-              onTap: () {},
-              leading: Icon(Icons.change_circle_rounded),
+              onTap: () async {
+               await userController.toChangePass();
+              },
+              leading: const Icon(Icons.change_circle_rounded),
               title: Text(
                 "Đổi mật khẩu",
                 style: TextStyle(
                   fontSize: ThemeConfig.titleSize,
                 ),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey,
                 size: 18,
@@ -114,8 +121,10 @@ class Account extends StatelessWidget {
             ListTile(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
-              onTap: () {},
-              leading: Icon(Icons.logout),
+              onTap: () async {
+                await userController.logout(context);
+              },
+              leading: const Icon(Icons.logout),
               title: Text(
                 "Đăng xuất",
                 style: TextStyle(
@@ -154,51 +163,4 @@ Row buildNotificationOptionRow(String title, bool isActive) {
   );
 }
 
-GestureDetector buildAccountOptionRow(BuildContext context, String title) {
-  return GestureDetector(
-    onTap: () {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(title),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Option 1"),
-                  Text("Option 2"),
-                  Text("Option 3"),
-                ],
-              ),
-              actions: [
-                FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("Close")),
-              ],
-            );
-          });
-    },
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
-            ),
-          ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.grey,
-          ),
-        ],
-      ),
-    ),
-  );
-}
+

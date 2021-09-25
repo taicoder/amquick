@@ -12,12 +12,13 @@ class Asset extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ClipPathAndSearch(),
+        ClipPathAndSearch(context),
         Categories(),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-            child: GridView.builder(
+            child: Obx(()=>
+            assetController.processing==true ? Center(child: CircularProgressIndicator()) : GridView.builder(
               itemCount: assetController.listAssets.length ,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
@@ -29,6 +30,7 @@ class Asset extends StatelessWidget {
                 taiSanModel: assetController.listAssets[index],
               ),
             ),
+            ),
           ),
         ),
       ],
@@ -36,7 +38,7 @@ class Asset extends StatelessWidget {
   }
 }
 
-Widget ClipPathAndSearch() {
+Widget ClipPathAndSearch(BuildContext context) {
   return ClipPath(
     clipper: MyClipper(),
     child: Container(
@@ -65,26 +67,31 @@ Widget ClipPathAndSearch() {
             children: [
               Lottie.asset("assets/animations/asset.json",
                   width: 100, height: 100),
-              ElevatedButton(
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    '2022',
-                    style: TextStyle(fontSize: ThemeConfig.defaultSize),
-                  ),
-                ),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  primary: ThemeConfig.blueColor,
-                  shape: CircleBorder(),
-                ),
-              ),
+              // ElevatedButton(
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(15),
+              //     child: Text(
+              //       '2022',
+              //       style: TextStyle(fontSize: ThemeConfig.defaultSize),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              //   style: ElevatedButton.styleFrom(
+              //     primary: ThemeConfig.blueColor,
+              //     shape: CircleBorder(),
+              //   ),
+              // ),
             ],
           ),
           SizedBox(
             height: 35,
             width: 200,
             child: TextFormField(
+              controller: assetController.searchController,
+              onEditingComplete : ()  {
+                 assetController.getAssetSearch();
+                 FocusScope.of(context).requestFocus(FocusNode());
+              },
               decoration: InputDecoration(
                 filled: true,
                 fillColor: ThemeConfig.whiteColor,

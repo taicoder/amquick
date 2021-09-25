@@ -1,0 +1,4 @@
+db.phongban.find().forEach(function( aRow ) {
+     var aNewItem = { item: aRow.tenpb, ref: 0 }
+   db.phongban.update(aRow, {$set:{new:aNewItem} })
+});

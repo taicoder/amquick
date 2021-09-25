@@ -1,0 +1,8 @@
+db.taisan.update({}, 
+    {$set:{
+        kiemke:[2021,2022],
+        luanchuyen:[{ngaychuyen:null, nguoinhan:null, phongban:null}],
+        tao:{nguoitao:null,tgtao:null},
+        suadoi:{nguoisua:null,tgsua:null}
+    }}, 
+    { multi: true, upsert: false}

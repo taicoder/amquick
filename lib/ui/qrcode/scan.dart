@@ -15,7 +15,7 @@ class Scan extends StatelessWidget {
               ElevatedButton(
                   onPressed: ()  {
                   //  Get.snackbar("title", "message");
-                      scanQRController.scanQR();
+                      scanQRController.scanQR(context);
                   },
                   child: Text("Scan QR")),
               SizedBox(height:30),

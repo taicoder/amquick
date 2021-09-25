@@ -5,7 +5,7 @@ class BaseApi {
   Dio dio = Dio(
   BaseOptions(
     baseUrl: AppConfig.SERVER_URL,
-    connectTimeout: 5*1000,  //10s
+    connectTimeout: 60*1000,  //60s
     receiveTimeout: 60*1000,  //60s
   ));
 

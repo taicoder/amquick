@@ -4,55 +4,304 @@ import 'package:intl/intl.dart';
 class AssetController extends GetxController {
   RxBool _processing = false.obs;
   bool get processing => _processing.value;
+
+  //Xóa sửa
+  RxBool _myupdate = false.obs;
+  bool get myupdate => _myupdate.value;
+
+  //Tài sản
+  TaiSanModel taisan = TaiSanModel();
+
+  //Xóa sửa
+  RxString _tinhtrangtaisan = "Bình thường".obs;
+  String get tinhtrangtaisan => _tinhtrangtaisan.value;
+
+  void settinhtrangtaisan(String value){
+    _tinhtrangtaisan.value=value;
+  }
+
+  //
   List<LoaiTSModel> listCategories=[];
   List<TaiSanModel> listAssets=[];
+  List<TaiSanModel> listAssetsFilterd=[];
+  final searchController = TextEditingController();
+  int selectedIndex = 0;
+
+  //Edit Asset
+  final tenController = TextEditingController();
+  final giaController = TextEditingController();
+  final motaController = TextEditingController();
+  final loaitsController = TextEditingController();
+  final searchLoaiTSController= TextEditingController();
+
+  final DateTime selectedDate = DateTime.now().add(const Duration(days: -60));
+  final ngaychuyenController= TextEditingController();
+  final nguoinhanController= TextEditingController();
+  final phongbanController= TextEditingController();
+
+  //Search Loại tài sản
+  List<LoaiTSModel> listSearchCategories=[];
+
+  //
+  List<PhongBanModel> listPhongBan=[];
+  List<PhongBanModel> listSearchPhongBan=[];
+  final searchPhongBanController= TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
   }
 
-  void getAll(){
+  Future<void> getAll() async{
+    selectedIndex=0;
     getCategories();
     getAsset();
   }
 
-  void getCategories() async {
+  Future<void> getCategories() async {
      var result = await api.categrories();
-    // if(result){
-    //   _processing.value=false;
-    //    Navigator.pop(context);
-    //    Navigator.pushNamed(context, "/index");
-    // //  Get.toNamed("/index");
-    // }else{
-    //   globalController.errorToast("Kết nối máy chủ thất bại");
-    //   _processing.value=false;
-    // }
+     _processing.value=true;
+    if(result){
+      _processing.value=false;
+    }else{
+      globalController.errorToast(globalController.error);
+      _processing.value=false;
+    }
   }
 
-  void getAsset() async {
+  Future<void> getAsset() async {
+   var result = await api.asset();
+    _processing.value=true;
+    if(result){
+       _processing.value=false;
+    }else{
+      _processing.value=false;
+      globalController.errorToast(globalController.error);
+    }
+
+  }
+
+  Future<void> getAssetFromCategorie(String id) async {
     var result = await api.asset();
-    // if(result){
-    //   _processing.value=false;
-    //    Navigator.pop(context);
-    //    Navigator.pushNamed(context, "/index");
-    // //  Get.toNamed("/index");
-    // }else{
-    //   globalController.errorToast("Kết nối máy chủ thất bại");
-    //   _processing.value=false;
-    // }
+    _processing.value=true;
+    if(result){
+      _processing.value=false;
+      id=="0"? listAssets :
+      listAssets=  listAssets.where((x) => x.loaits!.id==id).toList();
+    }else{
+      globalController.errorToast(globalController.error);
+      _processing.value=false;
+    }
   }
-  void getAssetFromCategorie(String id) async {
-   // var result = await api.taisan();
-    // if(result){
-    //   _processing.value=false;
-    //    Navigator.pop(context);
-    //    Navigator.pushNamed(context, "/index");
-    // //  Get.toNamed("/index");
-    // }else{
-    //   globalController.errorToast("Kết nối máy chủ thất bại");
-    //   _processing.value=false;
-    // }
+
+  Future<void> getAssetSearch() async {
+    var result = await api.asset();
+    _processing.value=true;
+    if(result){
+      _processing.value=false;
+      searchController.text==""? listAssets :
+      listAssets=  listAssets.where((x) => x.ten.toString().toLowerCase().contains(searchController.text) || TiengViet.parse(x.ten.toLowerCase()).contains(searchController.text.toLowerCase())).toList();
+    }else{
+      globalController.errorToast(globalController.error);
+      _processing.value=false;
+    }
   }
+
+  Future<void> setUpdateFormAsset(TaiSanModel taiSanModel) async  {
+    try {
+      _myupdate.value = true;
+      tenController.text = "";
+      giaController.text = "";
+      motaController.text = "";
+      loaitsController.text = "";
+
+      phongbanController.text = "";
+      ngaychuyenController.text = "";
+      nguoinhanController.text = "";
+
+      taisan=taiSanModel;
+      if(taisan.luanchuyen!=null) {
+        taisan.luanchuyen!.sort((a, b) => b.ngaychuyen!.compareTo(a.ngaychuyen!));
+      }
+      listSearchCategories=listCategories;
+      tenController.text = taiSanModel.ten;
+      giaController.text = convertVND(taiSanModel.gia);
+      loaitsController.text = taiSanModel.loaits!.ten;
+      motaController.text = taiSanModel.mota;
+    }
+    catch(e){
+      globalController.errorToast("setUpdateFormAsset: "+e.toString());
+    }
+
+  }
+
+  Future<void> setInsertFormAsset() async  {
+    _myupdate.value=false;
+
+    tenController.text= "";
+    giaController.text= "";
+    motaController.text= "";
+    loaitsController.text= "";
+  }
+
+  Future<void> searchLoaiTaiSan() async  {
+    _processing.value=true;
+    try{
+      _processing.value=false;
+      listSearchCategories=listCategories;
+      if(searchLoaiTSController.text.trim()!="") {
+        listSearchCategories= listSearchCategories.where((element) =>
+            element.ten.toLowerCase().contains(searchLoaiTSController.text.toLowerCase())
+            || TiengViet.parse(element.ten.toLowerCase()).contains(TiengViet.parse(searchLoaiTSController.text.toLowerCase()))
+        ).toList();
+      }
+    }catch(e){
+      globalController.errorToast("searchLoaiTaiSan: "+e.toString());
+    }
+  }
+
+  Future<void> updateasset() async {
+    _processing.value=true;
+    var result = await api.updateasset();
+    if(result){
+      _processing.value=false;
+      globalController.successToast("Thành công");
+    }else{
+      globalController.errorToast(globalController.error);
+      _processing.value=false;
+    }
+  }
+
+
+  Future<void> getPhongBan() async {
+    var result = await api.phongban();
+    _processing.value=true;
+    if(result){
+      _processing.value=false;
+      listSearchPhongBan=[];
+      listSearchPhongBan.addAll(listPhongBan);
+    }else{
+      globalController.errorToast(globalController.error);
+      _processing.value=false;
+    }
+  }
+
+  Future<void> searchPhongBan() async{
+    _processing.value=true;
+    try{
+      _processing.value=false;
+      listSearchPhongBan=listPhongBan;
+      if(searchPhongBanController.text.trim()!="") {
+        listSearchPhongBan= listSearchPhongBan.where((element) =>
+        element.tenpb.toLowerCase().contains(searchPhongBanController.text.toLowerCase())
+            || TiengViet.parse(element.tenpb.toLowerCase()).contains(TiengViet.parse(searchPhongBanController.text.toLowerCase()))
+        ).toList();
+      }
+    }catch(e){
+      globalController.errorToast("searchPhongBan: "+e.toString());
+    }
+  }
+
+  Future<void> KiemKe(String tinhtrang) async {
+    _processing.value=true;
+      KiemKeModel kiemKeModel = KiemKeModel(nam: globalController.year,tinhtrang:tinhtrang);
+      try{
+         taisan.kiemke!.removeWhere((element) => element.nam==globalController.year);
+      }catch(e){}
+      taisan.kiemke ??= [];
+      taisan.kiemke!.add(kiemKeModel);
+    _processing.value=false;
+     var result = await api.kiemke(taisan);
+      if(result){
+        globalController.successToast("Thành công");
+      }else {
+        globalController.errorToast(globalController.error);
+      }
+  }
+
+  Future<void> HuyKiemKe(String tinhtrang) async{
+    _processing.value=true;
+    try{
+      taisan.kiemke!.removeWhere((element) => element.nam==globalController.year);
+      if(taisan.kiemke!=null) if(taisan.kiemke!.isEmpty) taisan.kiemke=null;
+    }catch(e){}
+    _processing.value=false;
+    var result = await api.kiemke(taisan);
+    if(result){
+      globalController.successToast("Đã hủy");
+    }else {
+      globalController.errorToast(globalController.error);
+    }
+  }
+
+  Future<void> deleteLuanChuyen(LuanChuyenModel luanChuyenModel) async {
+    Get.defaultDialog(
+        title: "",
+        content: Text("Bạn có thực sự muốn xóa?", style: TextStyle(fontSize: ThemeConfig.headerSize)),
+        confirm: TextButton(
+          child: Text("Đồng ý",style: TextStyle(fontSize: ThemeConfig.titleSize)),
+          onPressed: () async {
+            _processing.value=true;
+            try {
+              _processing.value=false;
+
+              assetController.phongbanController.text="";
+              assetController.ngaychuyenController.text="";
+              assetController.nguoinhanController.text="";
+
+              taisan.luanchuyen!.remove(luanChuyenModel);
+              setUpdateFormAsset(taisan);
+              updateasset();
+              Get.back();
+              //  globalController.successToast("Thành công");
+            }catch(e){
+              globalController.errorToast(e.toString());
+            }
+
+          },
+        ),
+        cancel: Padding(
+            padding: const EdgeInsets.only(right: 40.0),
+            child: TextButton(
+            child: Text("Hủy", style: TextStyle(fontSize: ThemeConfig.titleSize),),
+            onPressed: () {
+            Get.back();
+            },
+            ),
+            ));
+  }
+
+  Future<void> thanhLyTaiSan() async {
+    Get.defaultDialog(
+        title: "",
+        content: Text("Bạn có thực sự muốn thanh lý?", style: TextStyle(fontSize: ThemeConfig.headerSize),),
+        confirm: TextButton(
+          child: Text("Đồng ý",style: TextStyle(fontSize: ThemeConfig.titleSize),),
+          onPressed: () async {
+            _processing.value=true;
+            try {
+              taisan.thanhly=ThanhLyModel(ngaythanhly: DateTime.now(),nguoithanhly: globalController.hoten ) ;
+              await api.thanhlytaisan(taisan);
+              Get.back();
+              globalController.successToast("Thành công");
+              _processing.value=false;
+            }catch(e){
+              globalController.errorToast(e.toString());
+            }
+
+          },
+        ),
+        cancel: Padding(
+          padding: const EdgeInsets.only(right: 40.0),
+          child: TextButton(
+            child: Text("Hủy", style: TextStyle(fontSize: ThemeConfig.titleSize),),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+        ));
+  }
+
 
 }
 

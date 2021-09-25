@@ -2,7 +2,7 @@ import 'package:amquick/all_export.dart';
 
 class TaoModel {
   String? nguoitao;
-  DateTime? tgtao;
+  String? tgtao;
 
   TaoModel({
     this.nguoitao ,
@@ -11,7 +11,7 @@ class TaoModel {
 
   factory TaoModel.fromJson(Map<String, dynamic> json) => TaoModel(
       nguoitao: json["nguoitao"],
-      tgtao: json["tgtao"]
+      tgtao: convertStringDateTimeFromTimestamp(json["tgtao"])
   );
 
   Map<String, dynamic> toJson() => {

@@ -1,0 +1,1 @@
+db.taisan.update({}, {$unset: {loai:1, tenloaitb:1}}, true, true);

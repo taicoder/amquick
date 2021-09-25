@@ -2,6 +2,7 @@ import 'package:amquick/introduction.dart';
 import 'package:flutter/services.dart';
 import 'all_export.dart';
 import 'ui/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,6 +10,7 @@ void main() async {
     statusBarColor: Colors.transparent, // transparent status bar
   ));
   // final prefs = await SharedPreferences.getInstance();
+  // final year = prefs.getInt('year');
   // String? user = prefs.getString('user');
   // int? count = prefs.getInt('count');
   // if(count!=0 && count!=null){
@@ -20,7 +22,7 @@ void main() async {
   // }else{
   //   runApp(const Login());
   // }
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/index", page: () => const Index()),
         GetPage(name: "/account", page: () => const Account()),
         GetPage(name: "/scan", page: () => const Scan()),
+        GetPage(name: "/infor", page: () => const Infor()),
+        GetPage(name: "/changepass", page: () => const ChangePass()),
       ],
     );
   }

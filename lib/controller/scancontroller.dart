@@ -1,27 +1,33 @@
 import 'package:amquick/all_export.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/services.dart';
 
 class ScanQRController extends GetxController {
   RxBool _processing = false.obs;
   bool get processing => _processing.value;
-  RxString _qrCode = "".obs;
-  String get qrCode => _qrCode.value;
   String scanedQrCode="";
   @override
   void onInit() {
     super.onInit();
   }
-  Future<void> scanQR() async {
-    String barcodeScanRes;
+
+  Future<void> scanQR(BuildContext context) async {
+    _processing.value=true;
+    scanedQrCode="";
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+      _processing.value=false;
+      scanedQrCode = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Hủy', true, ScanMode.QR);
-      _qrCode.value=barcodeScanRes;
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
+     TaiSanModel taiSanModel = assetController.listAssets.where((x) => x.id==scanedQrCode).first;
+     assetController.setUpdateFormAsset(taiSanModel);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AssetDetail()));
+    } catch(e) {
+      if(!e.toString().contains("-1")) {
+        globalController.errorToast("Không tìm thấy dữ liệu "+scanedQrCode);
+      }
     }
   }
+
+
 
 }
 

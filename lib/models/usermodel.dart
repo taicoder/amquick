@@ -1,28 +1,33 @@
 import 'package:amquick/all_export.dart';
 
 class UserModel {
-  String user;
-  String name;
-  List<dynamic>? quyen;
+  String id;
+  String tendangnhap;
+  String hoten;
+  String matkhau;
+  List<String>? quyen;
   PhongBanModel? phongban;
-  String? avatar;
+  String? anhdaidien;
 
-  UserModel(
-      {this.user = "", this.name = "", this.quyen, this.phongban, this.avatar});
+  UserModel({this.id="",this.tendangnhap = "", this.hoten = "", this.matkhau = "", this.quyen, this.phongban, this.anhdaidien});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-      user: json["user"],
-      name: json["name"],
-      quyen: json["quyen"] ?? null,
-      phongban: json["phongban"]!=null ? PhongBanModel.fromJson(json["phongban"]) : null ,
-      avatar: json["avatar"]
+      id: json["_id"],
+      tendangnhap: json["tendangnhap"],
+      matkhau: json["matkhau"],
+      hoten: json["hoten"],
+      quyen: json["quyen"]!=null ? List<String>.from(json["quyen"]) : null,
+      phongban: json["phongban"]!=null ? PhongBanModel.fromJsonEmbed(json["phongban"]) : null ,
+      anhdaidien: json["anhdaidien"]
   );
 
   Map<String, dynamic> toJson() => {
-        "user": user,
-        "name": name,
+        "id":id,
+        "tendangnhap": tendangnhap,
+        "matkhau": matkhau,
+        "hoten": hoten,
         "quyen": quyen,
-        "phongban": phongban,
-        "avatar": avatar
+        "phongban": phongban!=null ? phongban!.toJson() : null ,
+        "anhdaidien": anhdaidien
       };
 }
