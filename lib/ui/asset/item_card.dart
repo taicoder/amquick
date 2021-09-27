@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:amquick/all_export.dart';
 
 class ItemCard extends StatelessWidget {
@@ -31,11 +33,20 @@ class ItemCard extends StatelessWidget {
                   topRight: Radius.circular(10),
                   topLeft: Radius.circular(10),
                 ),
-                child: Image.asset(
-                  "assets/images/3.jpg",
-                  height: 150,
-                  fit: BoxFit.fitWidth,
-                ),
+                child:
+                taiSanModel.hinhanh ==null ?
+                Image.network(AppConfig.SERVER_IMAGE+"/"+ "noimage.png",fit:BoxFit.fitWidth,height: 150)
+                    : Image.network(AppConfig.SERVER_IMAGE+"/"+ taiSanModel.hinhanh!.first,fit:BoxFit.fitWidth,height: 150)
+
+                //Text("1"),
+              //  Image.network("https://scr.vn/wp-content/uploads/2020/08/H%C3%8CNH-%E1%BA%A2NH-M%E1%BA%A0NG-%C4%90%E1%BA%B8P.jpg"),
+
+                //Image.memory(dataFromBase64String(taiSanModel.hinhanh!=null ? taiSanModel.hinhanh![getRamdom(taiSanModel.hinhanh!.length)] : "" ),fit:BoxFit.fitWidth ,height: 150) ,
+                // Image.asset(
+                //   "assets/images/3.jpg",
+                //   height: 150,
+                //   fit: BoxFit.fitWidth,
+                // ),
               ),
               Padding(
                 padding: const EdgeInsets.all(5),

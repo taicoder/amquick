@@ -4,6 +4,8 @@ export 'package:flutter/src/material/icons.dart';
 export 'config/app_config.dart';
 export 'config/theme_config.dart';
 export 'utils.dart';
+export 'dart:convert';
+export 'dart:typed_data';
 
 
 //ui
@@ -20,6 +22,7 @@ export 'package:amquick/ui/asset/assetdetail.dart';
 export 'package:amquick/ui/asset/assetedit.dart';
 export 'package:amquick/ui/infor.dart';
 export 'package:amquick/ui/changepass.dart';
+export 'package:amquick/ui/qrcode/printqr.dart';
 
 
 //Package
@@ -32,12 +35,16 @@ export 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 export 'package:tiengviet/tiengviet.dart';
 export 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 export 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+export 'package:qr_flutter/qr_flutter.dart';
+export 'package:image_picker/image_picker.dart';
+
 
 //controller
 export 'package:amquick/controller/globalcontroller.dart';
 export 'package:amquick/controller/assetcontroller.dart';
 export 'package:amquick/controller/scancontroller.dart';
 export 'package:amquick/controller/usercontroller.dart';
+export 'package:amquick/controller/reportcontroller.dart';
 
 
 //model

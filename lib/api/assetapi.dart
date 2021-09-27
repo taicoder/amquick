@@ -130,7 +130,6 @@ mixin AssetApi on BaseApi {
     }
   }
 
-
   Future<bool> thanhlytaisan(TaiSanModel taiSanModel) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -155,7 +154,56 @@ mixin AssetApi on BaseApi {
     }
   }
 
+  Future<bool> uploadhinhanhtaisan(TaiSanModel taiSanModel, Uint8List bytes, String nameimage) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token").toString();
+      var url = '/image/upload';
 
+      final data = {
+        "idtaisan":  taiSanModel.id.toString(),
+        "hinhanh":  base64Encode(bytes),
+        "nameimage": nameimage
+      };
+
+      var response = await dio.post(url, data: data,  options: Options(headers: {"auth-token": token}));
+
+      if (response.data["success"] == "OK") {
+        await asset();
+        assetController.setUpdateFormAsset(taiSanModel);
+      }
+      return true;
+    } catch (e) {
+      // print(e.toString());
+      globalController.error = "uploadhinhanhtaisan: "+e.toString();
+      return false;
+    }
+  }
+
+  // Future<bool> uploadhinhanhtaisan(TaiSanModel taiSanModel) async {
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     String token = prefs.getString("token").toString();
+  //     var url = '/asset/capnhattaisan';
+  //
+  //     final data = {
+  //       "taisan":  taiSanModel.toJson(),
+  //       "hoten":  globalController.hoten
+  //     };
+  //
+  //     var response = await dio.post(url, data: data,  options: Options(headers: {"auth-token": token}));
+  //
+  //     if (response.data["success"] == "OK") {
+  //       await asset();
+  //      // assetController.setUpdateFormAsset(taiSanModel);
+  //     }
+  //     return true;
+  //   } catch (e) {
+  //     // print(e.toString());
+  //     globalController.error = "uploadhinhanhtaisan: "+e.toString();
+  //     return false;
+  //   }
+  // }
 
 
 }

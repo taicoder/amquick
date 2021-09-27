@@ -21,7 +21,7 @@ class ScanQRController extends GetxController {
      assetController.setUpdateFormAsset(taiSanModel);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AssetDetail()));
     } catch(e) {
-      if(!e.toString().contains("-1")) {
+      if(!e.toString().contains("-1") && !scanedQrCode.contains("-1")) {
         globalController.errorToast("Không tìm thấy dữ liệu "+scanedQrCode);
       }
     }

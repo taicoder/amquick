@@ -15,7 +15,7 @@ class Login extends StatelessWidget {
               ClipPath(
                 clipper: MyClipper(),
                 child: Container(
-                  height: logicalHeight / 2,
+                  height: logicalHeight / 4,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
@@ -48,7 +48,7 @@ class Login extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.only(top: 40),
                             child: Text(
-                              "AM QUICK",
+                              "",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 26,

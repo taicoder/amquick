@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:amquick/all_export.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+import 'package:photo_view/photo_view.dart';
 
 const kTileHeight = 60.0;
 class AssetDetail extends StatelessWidget {
@@ -18,7 +22,7 @@ class AssetDetail extends StatelessWidget {
 
 //Nút Kiểm kê
             SizedBox(
-              height: 30,
+              height: 35,
               width: 100,
               child: OutlinedButton(onPressed: () {
                 myModalBottomSheetTinhTrangTaiSan(context);
@@ -35,7 +39,7 @@ class AssetDetail extends StatelessWidget {
 
 //Nút Thanh lý
             SizedBox(
-              height: 30,
+              height: 35,
               width: 100,
               child: ElevatedButton(
                 onPressed: () {
@@ -44,6 +48,25 @@ class AssetDetail extends StatelessWidget {
                 child: Obx(()=> assetController.processing ? const SizedBox(height: 20, width: 20,child: CircularProgressIndicator(strokeWidth: 2,),): Text("Thanh lý",style: TextStyle(fontSize: ThemeConfig.titleSize)))  ,
                 style: ElevatedButton.styleFrom(
                   primary: ThemeConfig.blueColor,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15),bottomRight: Radius.circular(15)),
+                  ),
+                ),
+              ),
+            ),
+
+
+//Nút In QR
+            SizedBox(
+              height: 35,
+              width: 100,
+              child: ElevatedButton(
+                onPressed: () async {
+                 await Get.to(const PrintQRCode());
+                },
+                child: Text("In mã QR",style: TextStyle(fontSize: ThemeConfig.titleSize)) ,
+                style: ElevatedButton.styleFrom(
+                  primary: ThemeConfig.kCyanColor,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(15),bottomRight: Radius.circular(15)),
                   ),
@@ -66,6 +89,15 @@ class AssetDetail extends StatelessWidget {
                 Navigator.pop(context);
               }, icon: const Icon(Icons.arrow_back_ios)) ,
               actions: [
+
+            IconButton(onPressed: () async {
+              await assetController.getMyImage("camera");
+              }, icon: Icon(Icons.photo_camera,color: Colors.white,)),
+
+                IconButton(onPressed: () async {
+                  await assetController.getMyImage("gallery");
+                }, icon: Icon(Icons.camera,color: Colors.white,)),
+
                 IconButton(
                   icon:const Icon(Icons.more_vert, color: Colors.white) ,
                   onPressed: () async {
@@ -84,10 +116,42 @@ class AssetDetail extends StatelessWidget {
                     constraints: const BoxConstraints(
                       maxHeight: 200,
                     ),
-                    child: Image.asset(
-                      "assets/images/3.jpg",
-                      fit: BoxFit.cover,
+                    child:
+                    Obx(()=>
+                    !assetController.uploadimage ?
+                    assetController.taisan.hinhanh ==null ?
+                    Image.network(AppConfig.SERVER_IMAGE+"/"+ "noimage.png",fit:BoxFit.cover)
+                    :  Image.network(AppConfig.SERVER_IMAGE+"/"+ assetController.taisan.hinhanh!.first,fit:BoxFit.cover)
+                    : Image.network(AppConfig.SERVER_IMAGE+"/"+ "noimage.png",fit:BoxFit.cover)
                     ),
+
+                    //Obx(()=>assetController.uploadimage ? Image.memory(dataFromBase64String(assetController.taisan.hinhanh!=null ? assetController.taisan.hinhanh!.first : "-1")) : Image.memory(dataFromBase64String(assetController.taisan.hinhanh!=null ? assetController.taisan.hinhanh!.first : "-1"),fit:BoxFit.cover)) ,
+
+                    // Stack(
+                    //   children: [
+                    //     Center(child: Image.memory(dataFromBase64String(assetController.taisan.hinhanh!=null ? assetController.taisan.hinhanh!.first : "-1"), fit:BoxFit.cover,)),
+                    //     // PhotoViewGallery.builder(
+                    //     //   itemCount: assetController.taisan.hinhanh !=null ? assetController.taisan.hinhanh!.length : 0,
+                    //     //   builder: (context, index) {
+                    //     //     return PhotoViewGalleryPageOptions(
+                    //     //       imageProvider: MemoryImage(dataFromBase64String(assetController.taisan.hinhanh![index])) ,
+                    //     //       minScale: PhotoViewComputedScale.contained * 0.8,
+                    //     //       maxScale: PhotoViewComputedScale.covered * 2,
+                    //     //     );
+                    //     //   },
+                    //     //   scrollPhysics: BouncingScrollPhysics(),
+                    //     //   backgroundDecoration: BoxDecoration(
+                    //     //     color: Theme.of(context).canvasColor,
+                    //     //   ),
+                    //     // ),
+                    //     Positioned(child: IconButton(onPressed: (){
+                    //       Get.snackbar("ok","h");
+                    //     }, icon: Icon(Icons.photo_camera,color: Colors.white,)),bottom:0,right: 10,) ,
+                    //   ],
+                    // ) ,
+
+
+
                   ),
                 ),
               ),
@@ -115,19 +179,29 @@ class AssetDetail extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(5),
                     child: Obx(()=>Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        assetController.taisan.kiemke!=null ?  assetController.taisan.kiemke!.where((x)=>x.nam==globalController.year).isNotEmpty ? const Icon(Icons.check_circle_outline, color: Colors.green,size: 30,) :const Icon(Icons.check_circle_outline, color: Colors.grey,size: 30,) : const Icon(Icons.check_circle_outline, color: Colors.grey,size: 30,),
-                        assetController.taisan.kiemke!=null ?  assetController.taisan.kiemke!.where((x)=>x.nam==globalController.year).isNotEmpty ?  Padding(
-                          padding: const EdgeInsets.only(left:8.0),
-                          child: Text("Đã kiểm kê",  style: TextStyle(fontSize: ThemeConfig.titleSize)),
-                        ) : Padding(
-                          padding: const EdgeInsets.only(left:8.0),
-                          child: Text("Chưa kiểm kê",  style: TextStyle(fontSize: ThemeConfig.titleSize)),
-                        ) :  Padding(
-                          padding: const EdgeInsets.only(left:8.0),
-                          child: Text("Chưa kiểm kê",  style: TextStyle(fontSize: ThemeConfig.titleSize)),
+                      QrImage(
+                      data: assetController.taisan.id,
+                      version: QrVersions.auto,
+                      size: 70,
+                    ),
+                        Column(
+                          children: [
+                            assetController.taisan.kiemke!=null ?  assetController.taisan.kiemke!.where((x)=>x.nam==globalController.year).isNotEmpty ? const Icon(Icons.check_circle_outline, color: Colors.green,size: 30,) :const Icon(Icons.check_circle_outline, color: Colors.grey,size: 30,) : const Icon(Icons.check_circle_outline, color: Colors.grey,size: 30,),
+                            assetController.taisan.kiemke!=null ?  assetController.taisan.kiemke!.where((x)=>x.nam==globalController.year).isNotEmpty ?  Padding(
+                              padding: const EdgeInsets.only(left:8.0),
+                              child: Text("Đã kiểm kê",  style: TextStyle(fontSize: ThemeConfig.titleSize)),
+                            ) : Padding(
+                              padding: const EdgeInsets.only(left:8.0),
+                              child: Text("Chưa kiểm kê",  style: TextStyle(fontSize: ThemeConfig.titleSize)),
+                            ) :  Padding(
+                              padding: const EdgeInsets.only(left:8.0),
+                              child: Text("Chưa kiểm kê",  style: TextStyle(fontSize: ThemeConfig.titleSize)),
+                            ),
+                          ],
                         ),
+
                         assetController.processing ? Text("") : Text("")
                       ],
                     )),
@@ -315,7 +389,6 @@ class AssetDetail extends StatelessWidget {
           ],
         ),
       ),
-
     )) ;
   }
 }
@@ -345,6 +418,49 @@ void myModalBottomSheetTinhTrangTaiSan(BuildContext context){
                   Text("Chọn tình trạng tài sản", style: TextStyle(color: ThemeConfig.blackColor, fontFamily: "Quicksand", fontSize: ThemeConfig.titleSize)),
                 ),
                 const SizedBox(height:30),
+                Expanded(
+                  child: ListView(
+                    children: ListTile.divideTiles( //          <-- ListTile.divideTiles
+                      context: context,
+                      tiles: ["Hủy kiểm kê","Bình thường", "Hỏng hóc đang sửa chữa"].map((item) => ListTile(
+                        onTap: (){
+                          item=="Hủy kiểm kê" ? assetController.HuyKiemKe(item) : assetController.KiemKe(item);
+                          Navigator.pop(context);
+                        },
+                        title: item=="Hủy kiểm kê" ? Text(item, style: TextStyle(fontSize: ThemeConfig.titleSize, color: Colors.red)) :Text(item, style: TextStyle(fontSize: ThemeConfig.titleSize)),
+                      )),
+                    ).toList(),
+                  ) ,
+                ),
+
+              ],
+            ) ,
+          ),
+        );
+
+      });
+}
+
+void myModalBottomSheetImage(BuildContext context){
+  showModalBottomSheet(
+      isScrollControlled:true,
+      backgroundColor: ThemeConfig.whiteColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+      ),
+      context: context,
+      builder: (context){
+        return FractionallySizedBox(
+          heightFactor: 0.95,
+          child: Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:
+                  Text("Chọn hình ảnh tài sản", style: TextStyle(color: ThemeConfig.blackColor, fontFamily: "Quicksand", fontSize: ThemeConfig.titleSize)),
+                ),
+                const SizedBox(height:20),
                 Expanded(
                   child: ListView(
                     children: ListTile.divideTiles( //          <-- ListTile.divideTiles

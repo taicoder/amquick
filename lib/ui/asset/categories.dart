@@ -30,11 +30,11 @@ class _CategoriesState extends State<Categories> {
 
   Widget buildCategory(int index) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         setState(() {
           assetController.selectedIndex = index;
-          assetController.getAssetFromCategorie(assetController.listCategories[index].id.toString());
         });
+        await assetController.getAssetFromCategorie(assetController.listCategories[index].id.toString());
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),

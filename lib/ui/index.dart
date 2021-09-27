@@ -142,7 +142,9 @@ class _IndexState extends State<Index> {
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
+                   //   Get.to(Message());
                       setState(() {
+
                         currentTab = 2;
                         count = 0;
                         _pageController.animateToPage(2,
@@ -153,31 +155,14 @@ class _IndexState extends State<Index> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        count == 0
-                            ? Icon(
-                                Icons.notifications,
-                                color: currentTab == 2
-                                    ? ThemeConfig.blueColor
-                                    : Colors.grey,
-                              )
-                            : Badge(
-                                badgeColor: ThemeConfig.redColor,
-                                animationDuration:
-                                    const Duration(milliseconds: 300),
-                                badgeContent: Text(
-                                  count.toString(),
-                                  style:
-                                      TextStyle(color: ThemeConfig.whiteColor),
-                                ),
-                                child: Icon(
-                                  Icons.notifications,
-                                  color: currentTab == 2
-                                      ? ThemeConfig.blueColor
-                                      : Colors.grey,
-                                ),
-                              ),
+                        Icon(
+                          Icons.bar_chart,
+                          color: currentTab == 2
+                              ? ThemeConfig.blueColor
+                              : Colors.grey,
+                        ),
                         Text(
-                          'Thông báo',
+                          'Báo cáo',
                           style: TextStyle(
                             color: currentTab == 2
                                 ? ThemeConfig.blueColor
@@ -191,6 +176,7 @@ class _IndexState extends State<Index> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
+
                         currentTab = 3;
                         _pageController.animateToPage(3,
                             duration: const Duration(microseconds: 500),

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:get/utils.dart';
 import 'package:amquick/all_export.dart';
 
 class TaiSanModel {
@@ -39,7 +39,7 @@ class TaiSanModel {
       mota: json["mota"] ?? "",
       tao: json["tao"] == null ? null : TaoModel.fromJson(json["tao"]),
       suadoi: json["suadoi"] == null ? null : SuaDoiModel.fromJson(json["suadoi"]),
-      hinhanh: json["hinhanh"],
+      hinhanh: json["hinhanh"]==null ? null: List<String>.from(json["hinhanh"]),
       thanhly: json["thanhly"] == null ? null : ThanhLyModel.fromJson(json["thanhly"])
   );
 

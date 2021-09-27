@@ -1,86 +1,71 @@
-import 'package:amquick/all_export.dart';
+import 'dart:async';
 
-class Message extends StatelessWidget {
+import 'package:amquick/all_export.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+
+class Message extends StatefulWidget {
   const Message({Key? key}) : super(key: key);
+
+  @override
+  _MessageState createState() => _MessageState();
+}
+
+class _MessageState extends State<Message> {
+  bool _isLoading = true;
+  String link="http://192.168.1.9:3000/api/makefile/pdf/kiemke";
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      try {
+       // var file = await DefaultCacheManager().getSingleFile("https://firebasestorage.googleapis.com/v0/b/filledstacks.appspot.com/o/filledstacks_tutorials.pdf?alt=media&token=a5e671e7-5acd-4bc4-a167-8d8483954d2a");
+  //    print("99999999999999999999999: "+file.path);
+       // await OpenFile.open(file);
+       // Navigator.of(context).pop();
+      }catch(e){
+        print(e.toString());
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeConfig.backgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text("Thông báo"),
-            ),
-            _buildListViewGroupTask(),
-          ],
-        ),
-      ),
-    );
-  }
+      appBar: AppBar(
+        title: const Text(''),
+        actions: [
+          TextButton(child: Text("Kiểm kê", style:TextStyle(color: Colors.white, fontSize: ThemeConfig.headerSize),),onPressed: (){
+            setState(() {
+              link="http://192.168.1.9:3000/api/makefile/pdf/kiemke";
+            });
 
-  Widget _buildListViewGroupTask() {
-    return SizedBox(
-      height: 25,
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        shrinkWrap: false,
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return Material(
-            color: Colors.white,
-            child: Column(
-              children: [
-                ListTile(
-                  trailing: Wrap(
-                    children: [
-                      IconButton(
-                        onPressed: () async {
-                          // await Get.toNamed("/task/group/add_group");
-                        },
-                        icon: Icon(Icons.edit),
-                        tooltip: "Chỉnh sửa",
-                      ), // icon-1
-                      IconButton(
-                        onPressed: () {
-                          // taskController.taskGroup =
-                          //     taskController.listTaskGroup[index];
-                          // taskController.deleteGroup();
-                        },
-                        icon: Icon(
-                          Icons.delete_outline_outlined,
-                          color: Colors.red,
-                        ),
-                        tooltip: "Xóa",
-                      ), // icon-2
-                    ],
-                  ),
-                  title: Text(
-                    " taskController.listTaskGroup[index].name",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  subtitle: Text(
-                    "ddd",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  onTap: () => {
-                    // taskController.taskGroup =
-                    //     taskController.listTaskGroup[index],
-                    // Get.toNamed("/task/task_add"),
-                  },
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-              ],
-            ),
-          );
-        },
+            Future.delayed(const Duration(milliseconds: 2000), () {
+              setState(() {
+                link="http://192.168.1.9:3000/api/makefile/pdf/kiemke";
+              });
+            });
+          },),
+
+          TextButton(child: Text("Thanh lý", style:TextStyle(color: Colors.white, fontSize: ThemeConfig.headerSize),),onPressed: (){
+            setState(() {
+              link="http://192.168.1.9:3000/api/makefile/pdf/thanhly";
+            });
+
+            Future.delayed(const Duration(milliseconds: 2000), () {
+              setState(() {
+                link="http://192.168.1.9:3000/api/makefile/pdf/thanhly";
+              });
+            });
+
+          },),
+        ],
       ),
+      body: SfPdfViewer.network(link),
     );
   }
 }
+
+

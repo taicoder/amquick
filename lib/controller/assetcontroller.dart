@@ -1,5 +1,5 @@
 import 'package:amquick/all_export.dart';
-import 'package:intl/intl.dart';
+// import 'package:image/image.dart' as IMG;
 
 class AssetController extends GetxController {
   RxBool _processing = false.obs;
@@ -8,6 +8,11 @@ class AssetController extends GetxController {
   //Xóa sửa
   RxBool _myupdate = false.obs;
   bool get myupdate => _myupdate.value;
+
+
+  //Upload image
+  RxBool _uploadimage = false.obs;
+  bool get uploadimage => _uploadimage.value;
 
   //Tài sản
   TaiSanModel taisan = TaiSanModel();
@@ -302,6 +307,67 @@ class AssetController extends GetxController {
         ));
   }
 
+  Future<void> getMyImage(String source) async {
+    try{
+      double maxWidth = 500;
+      double maxHeight = 500;
+      int quality = 100;
+
+      final image=  await ImagePicker().pickImage(
+          source: source=="camera" ? ImageSource.camera : ImageSource.gallery,
+          // maxWidth: maxWidth,
+          // maxHeight: maxHeight,
+          // imageQuality: quality
+      );
+      final bytes = await image?.readAsBytes() as Uint8List;
+    //  IMG.Image? img = IMG.decodeImage(bytes.le);
+    //   print(bytes.lengthInBytes/1024);  //kb
+      // print(img?.height);
+
+    //  String base64= base64Encode(bytes);
+      taisan.hinhanh?.clear();
+      if(taisan.hinhanh==null){
+        taisan.hinhanh=[];
+      }
+      taisan.hinhanh?.add(image!.name);
+      await saveImage(bytes, image!.name);
+
+    }catch(e){
+      print(e.toString());
+    }
+
+  }
+
+  Future<void> saveImage(Uint8List bytes, String nameimage) async {
+    _uploadimage.value=true;
+    var result = await api.uploadhinhanhtaisan(taisan, bytes, nameimage);
+    if(result){
+      _uploadimage.value=false;
+       globalController.successToast("Thành công");
+    }else{
+      globalController.errorToast(globalController.error);
+    }
+
+  }
+
+  // Future<void> saveImage(String base64) async {
+  //   _uploadimage.value=true;
+  //   taisan.hinhanh?.clear();
+  //   if(taisan.hinhanh==null){
+  //     taisan.hinhanh=[];
+  //   }
+  //   taisan.hinhanh?.add(base64);
+  //   _uploadimage.value=false;
+  //   globalController.successToast("Thành công");
+  //   assetController.setUpdateFormAsset(taisan);
+  //   var result = await api.uploadhinhanhtaisan(taisan);
+  //   if(result){
+  //    // globalController.successToast("Thành công");
+  //   }else{
+  //     globalController.errorToast(globalController.error);
+  //   }
+  //
+  // }
 
 }
 
