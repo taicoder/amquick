@@ -12,8 +12,8 @@ class Message extends StatefulWidget {
 }
 
 class _MessageState extends State<Message> {
-  bool _isLoading = true;
-  String link="http://192.168.1.9:3000/api/makefile/pdf/kiemke";
+  bool isLoading = false;
+  String link=AppConfig.SERVER_URL+"/makefile/report/kiemke/"+globalController.token+"/"+globalController.year.toString();
 
   @override
   void initState() {
@@ -37,33 +37,24 @@ class _MessageState extends State<Message> {
       appBar: AppBar(
         title: const Text(''),
         actions: [
-          TextButton(child: Text("Kiểm kê", style:TextStyle(color: Colors.white, fontSize: ThemeConfig.headerSize),),onPressed: (){
+          TextButton(child: Text("Kiểm kê", style:TextStyle(color: Colors.white, fontSize: ThemeConfig.headerSize),),onPressed: () async {
+            isLoading=true;
             setState(() {
-              link="http://192.168.1.9:3000/api/makefile/pdf/kiemke";
-            });
-
-            Future.delayed(const Duration(milliseconds: 2000), () {
-              setState(() {
-                link="http://192.168.1.9:3000/api/makefile/pdf/kiemke";
-              });
+              link=AppConfig.SERVER_URL+"/makefile/report/kiemke/"+globalController.token+"/"+globalController.year.toString();
+              isLoading=false;
             });
           },),
 
-          TextButton(child: Text("Thanh lý", style:TextStyle(color: Colors.white, fontSize: ThemeConfig.headerSize),),onPressed: (){
+          TextButton(child: Text("Thanh lý", style:TextStyle(color: Colors.white, fontSize: ThemeConfig.headerSize),),onPressed: () async {
+            isLoading=true;
             setState(() {
-              link="http://192.168.1.9:3000/api/makefile/pdf/thanhly";
+              link=AppConfig.SERVER_URL+"/makefile/report/thanhly/"+globalController.token+"/"+globalController.year.toString();
+              isLoading=false;
             });
-
-            Future.delayed(const Duration(milliseconds: 2000), () {
-              setState(() {
-                link="http://192.168.1.9:3000/api/makefile/pdf/thanhly";
-              });
-            });
-
           },),
         ],
       ),
-      body: SfPdfViewer.network(link),
+      body: !isLoading ?  SfPdfViewer.network(link,canShowScrollStatus: true, pageSpacing: 10,) : CircularProgressIndicator(),
     );
   }
 }
